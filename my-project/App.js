@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Button, Vibration } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Vibration, ScrollView } from 'react-native';
 import { useState } from 'react';
 
 export default function App() {
@@ -76,26 +76,43 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText}>Text to translate</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={text => translate(text)}
-        value={text}
-        placeholder="useless placeholder"
-        keyboardType="default"
-        multiline
-      />
-      <Text style={styles.titleText}>Translation</Text>
-      <TextInput
-        style={styles.input}
-        value={translatedText}
-        placeholder="useless placeholder"
-        keyboardType="default"
-        multiline
+      <View style={styles.inputContainer}>
+        <Text style={styles.titleText}>Text to translate</Text>
+        <ScrollView>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => translate(text)}
+            value={text}
+            placeholder="useless placeholder"
+            keyboardType="default"
+            multiline
+          />
+        </ScrollView>
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={styles.titleText}>Translation</Text>
+        <ScrollView>
+          <TextInput
+            style={styles.input}
+            value={translatedText}
+            placeholder="useless placeholder"
+            keyboardType="default"
+            multiline
+            editable={false}
+          />
+        </ScrollView>
+
+      </View>
+      <Button
+        style={styles.button}
+        onPress={vibratePattern}
+        title="VIBRATE"
+        color="#000000"
       />
       <Button
-        onPress={vibratePattern}
-        title="Vibrate"
+        style={styles.button}
+        onPress={Vibration.cancel()}
+        title="Cancel"
         color="#000000"
       />
     </View>
@@ -107,10 +124,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+
   input: {
     height: 100,
-    margin: 12,
     borderWidth: 1,
     padding: 10,
+  },
+
+  inputContainer: {
+    marginBottom: 20,
+
+  },
+
+  container: {
+    marginTop: 20,
+    margin: 12,
   },
 });
