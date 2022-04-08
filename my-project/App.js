@@ -4,6 +4,9 @@ import { useState } from 'react';
 export default function App() {
   const [text, setText] = useState(null);
   const [translatedText, setTranslatedText] = useState(null);
+
+
+  let isCancelled = false
   let dictionary = {
     "a": "•―",
     "b": "―•••",
@@ -30,9 +33,60 @@ export default function App() {
     "w": "•――",
     "x": "―••―",
     "y": "―•――",
-    "z": "――••"
+    "z": "――••",
+    "1": "•――――",
+    "2": "••―――",
+    "3": "•••――",
+    "4": "••••―",
+    "5": "•••••",
+    "6": "―••••",
+    "7": "――•••",
+    "8": "―――••",
+    "9": "――――•",
+    "0": "―――――",
+    "à": "•――•―",
+    "å": "•――•―",
+    "ä": "•―•―",
+    "æ": "•―•―",
+    "ç": "•―•―",
+    "ĉ": "―•―••",
+    "ç": "―•―••",
+    "ð": "••――•",
+    "è": "•―••―",
+    "é": "••―••",
+    "đ": "••―••",
+    "ĝ": "――•―•",
+    "ĥ": "――――",
+    "š": "――――",
+    "ĵ": "•―――•",
+    "ñ": "――•――",
+    "ö": "―――•",
+    "ø": "―――•",
+    "ŝ": "•••―•",
+    "þ": "•――••",
+    "ü": "••――",
+    "ŭ": "••――",
+    "ż": "――••―",
+    "'": "•――――•",
+    "-": "―••••―",
+    "!": "――••―",
+    "\"": "•―••―•",
+    "$": "•••―••―",
+    "&": "•―•••",
+    "(": "―•――•",
+    ")": "―•――•―",
+    "*": "―•―•―",
+    ",": "――••――",
+    ".": "•―•―•―",
+    "/": "―••―•",
+    ":": "―――•••",
+    ";": "―•―•―•",
+    "?": "••――••",
+    "@": "•――•―•",
+    "_": "••――•―",
+    "+": "•―•―•",
+    "=": "―•••―",
   }
-
 
 
 
@@ -54,8 +108,12 @@ export default function App() {
 
   const timer = ms => new Promise(res => setTimeout(res, ms))
 
-  const vibratePattern = async () => {
+  const vibratePattern = async () => { 
+    isCancelled = false
     for (let element of translatedText) {
+      if(isCancelled == true) {
+        return
+      }
       if (element == "•") {
         Vibration.vibrate(50)
       }
@@ -83,7 +141,7 @@ export default function App() {
             style={styles.input}
             onChangeText={text => translate(text)}
             value={text}
-            placeholder="useless placeholder"
+            placeholder="text to tranlate"
             keyboardType="default"
             multiline
           />
@@ -95,7 +153,7 @@ export default function App() {
           <TextInput
             style={styles.input}
             value={translatedText}
-            placeholder="useless placeholder"
+            placeholder="morse code translation"
             keyboardType="default"
             multiline
             editable={false}
@@ -103,18 +161,12 @@ export default function App() {
         </ScrollView>
 
       </View>
-      <Button
-        style={styles.button}
-        onPress={vibratePattern}
-        title="VIBRATE"
-        color="#000000"
-      />
-      <Button
-        style={styles.button}
-        onPress={Vibration.cancel()}
-        title="Cancel"
-        color="#000000"
-      />
+      <View style={styles.button}>
+        <Button onPress={vibratePattern} title="VIBRATE" color="#000000" />
+      </View>
+      <View style={styles.button}>
+        <Button onPress={() => {isCancelled = true;}} title="Cancel" color="#000000" />
+      </View>
     </View>
   );
 }
@@ -139,5 +191,9 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 20,
     margin: 12,
+  },
+
+  button: {
+    marginBottom: 20,
   },
 });
